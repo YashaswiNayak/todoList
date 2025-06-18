@@ -6,6 +6,7 @@ import com.sun.source.util.TaskListener;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TaskController {
@@ -16,12 +17,7 @@ public class TaskController {
 
     @GetMapping("/")
     public String defaultPage(){
-        return "Default Page";
-    }
-
-    @GetMapping("/hello")
-    public String printMessage(){
-        return "Hello World - I am Alive";
+        return "Welcome to my todo list";
     }
 
     @GetMapping("/tasks")
@@ -29,11 +25,19 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
-
+    @GetMapping("/tasks/{id}")
+    public  Optional<Task> displayTaskById(@PathVariable Integer id){
+        return taskService.getTaskById(id);
+    }
 
     @PostMapping("/create")
     public Task createNewTask(@RequestBody String taskDefinition){
         return taskService.createTask(taskDefinition);
+    }
+
+    @DeleteMapping("/delete-task/{id}")
+    public void deleteTask(@PathVariable Integer id){
+        taskService.deleteTask(id);
     }
 
 
