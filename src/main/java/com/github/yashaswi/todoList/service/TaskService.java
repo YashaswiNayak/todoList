@@ -39,4 +39,15 @@ public class TaskService {
     public List<Task> getTaskByStatus(Boolean status) {
         return taskRepository.findByStatus(status);
     }
+
+    public Task updateTaskStatus(Integer id){
+        Optional<Task> optionalTask=taskRepository.findById(id);
+        if(optionalTask.isPresent()){
+            Task task=optionalTask.get();
+            task.setStatus(true);
+            return taskRepository.save(task);
+        }else{
+            throw new RuntimeException("The task with "+id+" is not present");
+        }
+    }
 }

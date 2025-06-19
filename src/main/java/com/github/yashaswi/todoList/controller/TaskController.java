@@ -21,7 +21,10 @@ public class TaskController {
     }
 
     @GetMapping("/tasks")
-    public List<Task> displayAllTasks(){
+    public List<Task> displayAllTasks(@RequestParam(required = false) Boolean status){
+        if(status!=null){
+            return taskService.getTaskByStatus(status);
+        }
         return taskService.getAllTasks();
     }
 
@@ -40,7 +43,9 @@ public class TaskController {
         taskService.deleteTask(id);
     }
 
-
-
+    @PutMapping("tasks/{id}/done")
+    public Task updateTask(@PathVariable Integer id){
+        return taskService.updateTaskStatus(id);
+    }
 
 }
