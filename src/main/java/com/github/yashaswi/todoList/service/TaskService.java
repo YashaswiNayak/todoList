@@ -55,4 +55,8 @@ public class TaskService {
             taskRepository.save(task);
             return task;
     }
+
+    public List<Task> searchForTasks(String keyword){
+        return taskRepository.findByTaskDefinitionContainingIgnoreCase(keyword);
+    }
 }

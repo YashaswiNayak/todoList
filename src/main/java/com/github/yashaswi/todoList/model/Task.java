@@ -45,4 +45,13 @@ public class Task {
     public void setStatus(Boolean status) {
         this.status = status;
     }
+
+    //Deleted
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 }

@@ -17,6 +17,8 @@ public class TaskController {
         this.taskService=taskService;
     }
 
+//_____________________________________________Get Mapping______________________________________________________________
+
     @GetMapping("/")
     public String defaultPage(){
         return "Welcome to my todo list";
@@ -35,15 +37,25 @@ public class TaskController {
         return taskService.getTaskById(id);
     }
 
+    @GetMapping("/tasks/search")
+    public List<Task> keywordSearch(@RequestParam(required = true) String keyword){
+        return taskService.searchForTasks(keyword);
+    }
+//__________________________________________Post Mapping________________________________________________________________
+
     @PostMapping("/create")
     public Task createNewTask(@RequestBody TaskCreateRequest request){
         return taskService.createTask(request);
     }
 
+//__________________________________________Delete Mapping______________________________________________________________
+
     @DeleteMapping("/delete-task/{id}")
     public void deleteTask(@PathVariable Integer id){
         taskService.deleteTask(id);
     }
+
+//__________________________________________Put Mapping_________________________________________________________________
 
     @PutMapping("tasks/{id}/done")
     public Task updateTask(@PathVariable Integer id){
