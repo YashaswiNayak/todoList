@@ -2,6 +2,7 @@ package com.github.yashaswi.todoList.service;
 
 import com.github.yashaswi.todoList.dto.TaskCreateRequest;
 import com.github.yashaswi.todoList.dto.TaskUpdateRequest;
+import com.github.yashaswi.todoList.exception.TaskNotFoundException;
 import com.github.yashaswi.todoList.model.Task;
 import com.github.yashaswi.todoList.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,8 @@ public class TaskService {
         return task;
     }
 
-    public Optional<Task> getTaskById(Integer id){
-        return taskRepository.findById(id);
+    public Task getTaskById(Integer id){
+        return taskRepository.findById(id).orElseThrow(()->new TaskNotFoundException(id));
     }
 
     public List<Task> getAllTasks(){
@@ -49,7 +50,7 @@ public class TaskService {
             task.setStatus(true);
             return taskRepository.save(task);
         }else{
-            throw new RuntimeException("The task with "+id+" is not present");
+            throw new TaskNotFoundException(id);
         }
     }
 
@@ -61,7 +62,7 @@ public class TaskService {
             taskRepository.save(task);
             return task;
         }else{
-            throw new RuntimeException("The task with id: "+id+"was not found");
+            throw new TaskNotFoundException(id);
         }
     }
 }

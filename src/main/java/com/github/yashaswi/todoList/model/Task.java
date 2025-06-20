@@ -16,6 +16,9 @@ public class Task {
     @Column(name = "status")
     private Boolean status;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     //ID
     public Integer getId() {
         return Id;

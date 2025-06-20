@@ -31,7 +31,7 @@ public class TaskController {
     }
 
     @GetMapping("/tasks/{id}")
-    public  Optional<Task> displayTaskById(@PathVariable Integer id){
+    public  Task displayTaskById(@PathVariable Integer id){
         return taskService.getTaskById(id);
     }
 
