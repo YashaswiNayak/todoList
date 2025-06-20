@@ -1,5 +1,7 @@
 package com.github.yashaswi.todoList.controller;
 
+import com.github.yashaswi.todoList.dto.TaskCreateRequest;
+import com.github.yashaswi.todoList.dto.TaskUpdateRequest;
 import com.github.yashaswi.todoList.model.Task;
 import com.github.yashaswi.todoList.service.TaskService;
 import com.sun.source.util.TaskListener;
@@ -34,8 +36,8 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public Task createNewTask(@RequestBody String taskDefinition){
-        return taskService.createTask(taskDefinition);
+    public Task createNewTask(@RequestBody TaskCreateRequest request){
+        return taskService.createTask(request);
     }
 
     @DeleteMapping("/delete-task/{id}")
@@ -46,6 +48,11 @@ public class TaskController {
     @PutMapping("tasks/{id}/done")
     public Task updateTask(@PathVariable Integer id){
         return taskService.updateTaskStatus(id);
+    }
+
+    @PutMapping("tasks/{id}/edit")
+    public Task updateTaskDefinition(@PathVariable Integer id, @RequestBody TaskUpdateRequest request){
+        return taskService.updateTaskDefinition(id,request);
     }
 
 }

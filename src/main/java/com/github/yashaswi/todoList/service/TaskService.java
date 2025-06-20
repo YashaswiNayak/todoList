@@ -1,5 +1,7 @@
 package com.github.yashaswi.todoList.service;
 
+import com.github.yashaswi.todoList.dto.TaskCreateRequest;
+import com.github.yashaswi.todoList.dto.TaskUpdateRequest;
 import com.github.yashaswi.todoList.model.Task;
 import com.github.yashaswi.todoList.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,10 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task createTask(String taskDescription) {
+    public Task createTask(TaskCreateRequest request) {
         Task task=new Task();
-        task.setTask(taskDescription);
-        task.setStatus(Boolean.FALSE);
+        task.setTask(request.getTask());
+        task.setStatus(request.getStatus());
         taskRepository.save(task);
         return task;
     }
@@ -48,6 +50,18 @@ public class TaskService {
             return taskRepository.save(task);
         }else{
             throw new RuntimeException("The task with "+id+" is not present");
+        }
+    }
+
+    public Task updateTaskDefinition(Integer id,TaskUpdateRequest request) {
+        Optional<Task> optionalTask=taskRepository.findById(id);
+        if(optionalTask.isPresent()){
+            Task task=optionalTask.get();
+            task.setTask(request.getTask());
+            taskRepository.save(task);
+            return task;
+        }else{
+            throw new RuntimeException("The task with id: "+id+"was not found");
         }
     }
 }

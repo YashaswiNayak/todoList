@@ -1,9 +1,6 @@
 package com.github.yashaswi.todoList.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -13,8 +10,10 @@ public class Task {
     private Integer Id;
 
     @NotNull
-    private String Task;
+    @Column(name = "taskDefinition")
+    private String taskDefinition;
 
+    @Column(name = "status")
     private Boolean status;
 
     //ID
@@ -28,11 +27,11 @@ public class Task {
 
     //Task
     public String getTask() {
-        return Task;
+        return taskDefinition;
     }
 
     public void setTask(String task) {
-        Task = task;
+        this.taskDefinition = task;
     }
 
     //Status
