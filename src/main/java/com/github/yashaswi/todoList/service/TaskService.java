@@ -44,25 +44,15 @@ public class TaskService {
     }
 
     public Task updateTaskStatus(Integer id){
-        Optional<Task> optionalTask=taskRepository.findById(id);
-        if(optionalTask.isPresent()){
-            Task task=optionalTask.get();
+        Task task=taskRepository.findById(id).orElseThrow(()->new TaskNotFoundException(id));
             task.setStatus(true);
             return taskRepository.save(task);
-        }else{
-            throw new TaskNotFoundException(id);
-        }
     }
 
     public Task updateTaskDefinition(Integer id,TaskUpdateRequest request) {
-        Optional<Task> optionalTask=taskRepository.findById(id);
-        if(optionalTask.isPresent()){
-            Task task=optionalTask.get();
+            Task task=taskRepository.findById(id).orElseThrow(()->new TaskNotFoundException(id));
             task.setTask(request.getTask());
             taskRepository.save(task);
             return task;
-        }else{
-            throw new TaskNotFoundException(id);
-        }
     }
 }
