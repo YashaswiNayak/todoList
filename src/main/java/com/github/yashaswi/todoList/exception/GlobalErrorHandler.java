@@ -15,7 +15,7 @@ public class GlobalErrorHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleOtherErrors(Exception exception){
-        ErrorResponse response=new ErrorResponse(exception.getMessage(),HttpStatus.NO_CONTENT.value());
-        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+        ErrorResponse response = new ErrorResponse(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); // 500 instead of 404
     }
 }

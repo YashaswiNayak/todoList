@@ -4,6 +4,7 @@ public class TaskCreateRequest {
 
     private String task;
     private Boolean status;
+    private Boolean deleted;
 
     public String getTask() {
         return task;
@@ -19,6 +20,14 @@ public class TaskCreateRequest {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public Boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
 }

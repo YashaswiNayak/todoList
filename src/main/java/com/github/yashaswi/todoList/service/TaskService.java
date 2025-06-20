@@ -22,6 +22,7 @@ public class TaskService {
         Task task=new Task();
         task.setTask(request.getTask());
         task.setStatus(request.getStatus());
+        task.setDeleted(request.isDeleted());
         taskRepository.save(task);
         return task;
     }
@@ -31,16 +32,18 @@ public class TaskService {
     }
 
     public List<Task> getAllTasks(){
-        return taskRepository.findAll();
+        return taskRepository.findByDeletedFalse();
     }
 
     public void deleteTask(Integer id) {
-        taskRepository.deleteById(id);
+        Task task=taskRepository.findById(id).orElseThrow(()->new TaskNotFoundException(id));
+        task.setDeleted(true);
+        taskRepository.save(task);
         System.out.print("Task with id: "+id+" has been deleted");
     }
 
-    public List<Task> getTaskByStatus(Boolean status) {
-        return taskRepository.findByStatus(status);
+    public List<Task> getTaskByStatus(boolean status) {
+        return taskRepository.findByStatusAndDeletedFalse(status);
     }
 
     public Task updateTaskStatus(Integer id){
@@ -57,6 +60,10 @@ public class TaskService {
     }
 
     public List<Task> searchForTasks(String keyword){
-        return taskRepository.findByTaskDefinitionContainingIgnoreCase(keyword);
+        return taskRepository.findByTaskDefinitionContainingIgnoreCaseAndDeletedFalse(keyword);
+    }
+
+    public List<Task> getDeletedTasks(Boolean deleted) {
+        return taskRepository.findByDeleted(deleted);
     }
 }
