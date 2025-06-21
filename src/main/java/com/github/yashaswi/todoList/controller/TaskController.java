@@ -53,7 +53,7 @@ public class TaskController {
 
 //__________________________________________Delete Mapping______________________________________________________________
 
-    @DeleteMapping("/delete-task/{id}")
+    @DeleteMapping("/tasks/delete/{id}")
     public void deleteTask(@PathVariable Integer id){
             taskService.deleteTask(id);
     }
@@ -68,6 +68,11 @@ public class TaskController {
     @PutMapping("tasks/{id}/edit")
     public Task updateTaskDefinition(@PathVariable Integer id, @RequestBody TaskUpdateRequest request){
         return taskService.updateTaskDefinition(id,request);
+    }
+
+    @PutMapping("tasks/{id}/restore")
+    public void restoreDeletedTask(@PathVariable Integer id){
+        taskService.restoreDeletedTask(id);
     }
 
 }

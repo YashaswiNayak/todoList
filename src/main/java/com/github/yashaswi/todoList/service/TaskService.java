@@ -66,4 +66,10 @@ public class TaskService {
     public List<Task> getDeletedTasks(Boolean deleted) {
         return taskRepository.findByDeleted(deleted);
     }
+
+    public void restoreDeletedTask(Integer id) {
+        Task task=taskRepository.findById(id).orElseThrow(()->new TaskNotFoundException(id));
+        task.setDeleted(false);
+        taskRepository.save(task);
+    }
 }
