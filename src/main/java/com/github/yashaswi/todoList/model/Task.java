@@ -3,6 +3,8 @@ package com.github.yashaswi.todoList.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
+
 @Entity
 public class Task {
     @Id
@@ -18,6 +20,9 @@ public class Task {
 
     @Column(name = "deleted")
     private Boolean deleted;
+
+    @Column(name = "dueDate")
+    private LocalDate dueDate;
 
     //ID
     public Integer getId() {
@@ -53,5 +58,13 @@ public class Task {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 }

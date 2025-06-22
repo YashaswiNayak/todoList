@@ -1,10 +1,13 @@
 package com.github.yashaswi.todoList.dto;
 
+import java.time.LocalDate;
+
 public class TaskCreateRequest {
 
     private String task;
     private Boolean status;
     private Boolean deleted;
+    private LocalDate dueDate;
 
     public String getTask() {
         return task;
@@ -28,6 +31,14 @@ public class TaskCreateRequest {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 
 }

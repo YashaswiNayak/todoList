@@ -7,8 +7,8 @@ import com.github.yashaswi.todoList.model.Task;
 import com.github.yashaswi.todoList.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -23,6 +23,7 @@ public class TaskService {
         task.setTask(request.getTask());
         task.setStatus(request.getStatus());
         task.setDeleted(request.isDeleted());
+        task.setDueDate(request.getDueDate());
         taskRepository.save(task);
         return task;
     }
@@ -71,5 +72,15 @@ public class TaskService {
         Task task=taskRepository.findById(id).orElseThrow(()->new TaskNotFoundException(id));
         task.setDeleted(false);
         taskRepository.save(task);
+    }
+
+    public List<Task> upcomingTasks() {
+        LocalDate currTime= LocalDate.now();
+        return taskRepository.findByDueDateAfterAndDeletedFalse(currTime);
+    }
+
+    public List<Task> overdueTasks() {
+        LocalDate currTime=LocalDate.now();
+        return taskRepository.findByDueDateBeforeAndDeletedFalse(currTime);
     }
 }

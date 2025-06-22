@@ -4,11 +4,9 @@ import com.github.yashaswi.todoList.dto.TaskCreateRequest;
 import com.github.yashaswi.todoList.dto.TaskUpdateRequest;
 import com.github.yashaswi.todoList.model.Task;
 import com.github.yashaswi.todoList.service.TaskService;
-import com.sun.source.util.TaskListener;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class TaskController {
@@ -25,12 +23,21 @@ public class TaskController {
     }
 
     @GetMapping("/tasks")
-    public List<Task> displayAllTasks(@RequestParam(required = false) Boolean status, @RequestParam(required = false) Boolean deleted){
+    public List<Task> displayAllTasks(
+            @RequestParam(required = false) Boolean status,
+            @RequestParam(required = false) Boolean deleted,
+            @RequestParam(required = false) String due
+    ){
         if(status!=null){
             return taskService.getTaskByStatus(status);
         }
         if(deleted!=null){
             return taskService.getDeletedTasks(deleted);
+        }
+        if(due !=null && due.equalsIgnoreCase("overdue")){
+            return taskService.overdueTasks();
+        }else if(due!=null && due.equalsIgnoreCase("upcoming")){
+            return taskService.upcomingTasks();
         }
         return taskService.getAllTasks();
     }
@@ -44,6 +51,16 @@ public class TaskController {
     public List<Task> keywordSearch(@RequestParam(required = true) String keyword){
         return taskService.searchForTasks(keyword);
     }
+
+//    @GetMapping("tasks/upcoming")
+//    public List<Task> showUpcomingTasks(){
+//        return taskService.upcomingTasks();
+//    }
+//
+//    @GetMapping("tasks/overdue")
+//    public List<Task> showOverdueTasks(){
+//        return taskService.overdueTasks();
+//    }
 //__________________________________________Post Mapping________________________________________________________________
 
     @PostMapping("/create")
