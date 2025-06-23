@@ -24,6 +24,10 @@ public class Task {
     @Column(name = "dueDate")
     private LocalDate dueDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priority")
+    private Priority priority;
+
     //ID
     public Integer getId() {
         return Id;
@@ -66,5 +70,13 @@ public class Task {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 }
