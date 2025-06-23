@@ -29,9 +29,11 @@ public class TaskController {
             @RequestParam(required = false) Boolean status,
             @RequestParam(required = false) Boolean deleted,
             @RequestParam(required = false) String due,
-            @RequestParam(required = false) Priority priority
+            @RequestParam(required = false) Priority priority,
+            @RequestParam(required = false,defaultValue = "dueDate") String sortBy,
+            @RequestParam(required = false,defaultValue = "asc") String order
     ) {
-        return taskService.getFilteredTasks(status, deleted, due, priority);
+        return taskService.getFilteredTasks(status, deleted, due, priority,sortBy,order);
     }
 
     @GetMapping("/tasks/{id}")

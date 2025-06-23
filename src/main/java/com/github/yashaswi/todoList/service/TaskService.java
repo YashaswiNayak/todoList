@@ -10,6 +10,7 @@ import com.github.yashaswi.todoList.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -74,7 +75,7 @@ public class TaskService {
     }
 
 
-    public List<Task> getFilteredTasks(Boolean status, Boolean deleted, String due, Priority priority) {
+    public List<Task> getFilteredTasks(Boolean status, Boolean deleted, String due, Priority priority,String sortBy,String order) {
         List<Task> tasks = taskRepository.findByDeletedFalse(); // start with all active tasks
 
         if (status != null) {
@@ -96,6 +97,15 @@ public class TaskService {
         if (deleted != null) {
             tasks = tasks.stream().filter(task -> task.getDeleted().equals(deleted)).toList();
         }
+        Comparator<Task> comparator = switch (sortBy) {
+            case "priority" -> Comparator.comparing(Task::getPriority);
+            case "task" -> Comparator.comparing(Task::getTask);
+            default -> Comparator.comparing(Task::getDueDate);
+        };
+        if(order.equalsIgnoreCase("desc")){
+            comparator=comparator.reversed();
+        }
+        tasks=tasks.stream().sorted(comparator).toList();
 
         return tasks;
     }
