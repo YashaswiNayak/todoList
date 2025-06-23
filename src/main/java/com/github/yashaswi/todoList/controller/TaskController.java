@@ -1,5 +1,6 @@
 package com.github.yashaswi.todoList.controller;
 
+import com.github.yashaswi.todoList.dto.PriorityUpdateRequest;
 import com.github.yashaswi.todoList.dto.TaskCreateRequest;
 import com.github.yashaswi.todoList.dto.TaskUpdateRequest;
 import com.github.yashaswi.todoList.model.Priority;
@@ -71,6 +72,11 @@ public class TaskController {
     @PutMapping("tasks/{id}/restore")
     public void restoreDeletedTask(@PathVariable Integer id){
         taskService.restoreDeletedTask(id);
+    }
+
+    @PutMapping("tasks/{id}/priority")
+    public void changePriority(@PathVariable Integer id, @RequestBody PriorityUpdateRequest priority){
+        taskService.changePriority(id,priority);
     }
 
 }

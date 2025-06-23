@@ -1,5 +1,6 @@
 package com.github.yashaswi.todoList.service;
 
+import com.github.yashaswi.todoList.dto.PriorityUpdateRequest;
 import com.github.yashaswi.todoList.dto.TaskCreateRequest;
 import com.github.yashaswi.todoList.dto.TaskUpdateRequest;
 import com.github.yashaswi.todoList.exception.TaskNotFoundException;
@@ -31,7 +32,7 @@ public class TaskService {
     }
 
     public Task getTaskById(Integer id) {
-        return taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        return taskRepository.findByIdAndDeletedFalse(id).orElseThrow(() -> new TaskNotFoundException(id));
     }
 
     public List<Task> getAllTasks() {
@@ -39,7 +40,7 @@ public class TaskService {
     }
 
     public void deleteTask(Integer id) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        Task task = taskRepository.findByIdAndDeletedFalse(id).orElseThrow(() -> new TaskNotFoundException(id));
         task.setDeleted(true);
         taskRepository.save(task);
         System.out.print("Task with id: " + id + " has been deleted");
@@ -50,13 +51,13 @@ public class TaskService {
     }
 
     public Task updateTaskStatus(Integer id) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        Task task = taskRepository.findByIdAndDeletedFalse(id).orElseThrow(() -> new TaskNotFoundException(id));
         task.setStatus(true);
         return taskRepository.save(task);
     }
 
     public Task updateTaskDefinition(Integer id, TaskUpdateRequest request) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        Task task = taskRepository.findByIdAndDeletedFalse(id).orElseThrow(() -> new TaskNotFoundException(id));
         task.setTask(request.getTask());
         taskRepository.save(task);
         return task;
@@ -64,10 +65,6 @@ public class TaskService {
 
     public List<Task> searchForTasks(String keyword) {
         return taskRepository.findByTaskDefinitionContainingIgnoreCaseAndDeletedFalse(keyword);
-    }
-
-    public List<Task> getDeletedTasks(Boolean deleted) {
-        return taskRepository.findByDeleted(deleted);
     }
 
     public void restoreDeletedTask(Integer id) {
@@ -101,5 +98,11 @@ public class TaskService {
         }
 
         return tasks;
+    }
+
+    public void changePriority(Integer id, PriorityUpdateRequest priority) {
+        Task task=taskRepository.findByIdAndDeletedFalse(id).orElseThrow(()->new TaskNotFoundException(id));
+        task.setPriority(priority.getPriority());
+        taskRepository.save(task);
     }
 }
